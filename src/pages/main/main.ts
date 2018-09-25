@@ -434,6 +434,10 @@ export class MainPage {
 
   sendFeedBack(message : string){
     let date = new Date();
+
+
+
+
     this.myService.getActiveUser().getIdToken()
       .then( (token:string) =>{
         // Get a reference to the database service
