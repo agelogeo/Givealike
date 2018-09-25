@@ -8,6 +8,7 @@ import firebase from 'firebase';
 import {MyService} from "../services/auth";
 import {MainPage} from "../pages/main/main";
 import {AndroidPermissions} from "@ionic-native/android-permissions";
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
 @Component({
   templateUrl: 'app.html'
 })
@@ -19,39 +20,35 @@ export class MyApp {
   constructor(
               platform: Platform,
               statusBar: StatusBar,
+              splashScreen : SplashScreen,private screenOrientation: ScreenOrientation,
               private androidPermissions: AndroidPermissions) {
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      //splashScreen.hide();
+                platform.ready().then(() => {
+                  // set to landscape
+                  this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
-      this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.GET_ACCOUNTS).then(
-        result => console.log('Has permission?',result.hasPermission),
-        err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.GET_ACCOUNTS)
-      );
-
-      this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.USE_CREDENTIALS).then(
-        result => console.log('Has permission?',result.hasPermission),
-        err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.USE_CREDENTIALS)
-      );
-
-      this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE).then(
-        result => console.log('Has permission?',result.hasPermission),
-        err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE)
-      );
+                  // Okay, so the platform is ready and our plugins are available.
+                  // Here you can do any higher level native things you might need.
+                  statusBar.styleDefault();
 
 
+                  this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.GET_ACCOUNTS).then(
+                    result => console.log('Has permission?',result.hasPermission),
+                    err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.GET_ACCOUNTS)
+                  );
 
-    });
+                  this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.USE_CREDENTIALS).then(
+                    result => console.log('Has permission?',result.hasPermission),
+                    err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.USE_CREDENTIALS)
+                  );
 
+                  this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE).then(
+                    result => console.log('Has permission?',result.hasPermission),
+                    err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE)
+                  );
 
-
-
+                  //splashScreen.hide();
+              });
   }
-
-
-
 
 }
 

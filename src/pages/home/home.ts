@@ -24,9 +24,9 @@ export class HomePage {
               public navCtrl: NavController,
               private loadingCtrl: LoadingController,
               private storage: Storage,
-              splashScreen: SplashScreen) {
+              public splashScreen: SplashScreen) {
 
-              splashScreen.hide();
+
               // Or to get a key/value pair
               storage.get('json').then((val) => {
                 if(val!=null){
@@ -35,6 +35,12 @@ export class HomePage {
                 }
               }).catch( e => alert(e));
 
+
+
+  }
+
+  ionViewWillEnter(){
+    this.splashScreen.hide();
   }
 
   tryRelogin(){

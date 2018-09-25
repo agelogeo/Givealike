@@ -13,7 +13,12 @@ import {GooglePlus} from "@ionic-native/google-plus";
 import {HomePage} from "../home/home";
 import {PrivacyPage} from "../privacy/privacy";
 import {HttpClient} from "@angular/common/http";
-import {AdMobFree, AdMobFreeBannerConfig, AdMobFreeRewardVideoConfig} from "@ionic-native/admob-free";
+import {
+  AdMobFree,
+  AdMobFreeBannerConfig,
+  AdMobFreeInterstitialConfig,
+  AdMobFreeRewardVideoConfig
+} from "@ionic-native/admob-free";
 import {Clipboard} from "@ionic-native/clipboard";
 import {Http} from "@angular/http";
 import firebase from 'firebase';
@@ -44,13 +49,13 @@ export class MainPage {
     name:string,
     pic:string
   }*/
-  host:string = "";
+  host:string = "https://givealike.a2hosted.com/deathwhisper.php?";
   link:string = "";
   loading : any;
   isBalanceOkay: boolean = true;
   emptyAd: boolean = true;
   wrongLink: boolean = false;
-  counter:number = 0;
+  MaxReached:boolean = false;
   minumum_balance:number = 0.1;
 
   // REWARDS
@@ -58,6 +63,12 @@ export class MainPage {
   rewardId:string = 'ca-app-pub-4781041300358039/4943879735';
   // T id : ca-app-pub-3940256099942544/5224354917
   //rewardId:string = 'ca-app-pub-3940256099942544/5224354917';
+
+  // INTERSTITIALS
+  // M id : ca-app-pub-4781041300358039/2310227861
+  interId:string = 'ca-app-pub-4781041300358039/2310227861';
+  // T id : ca-app-pub-3940256099942544/8691691433
+  //interId:string = 'ca-app-pub-3940256099942544/5224354917';
 
   // BANNERS
   // M id : ca-app-pub-4781041300358039/7468703746
@@ -94,9 +105,21 @@ export class MainPage {
     this.name =this.myService.json["displayName"];
     this.pic = this.myService.json["imageUrl"];
     this.showBannerAd();
-    this.checkBalance();
+    //this.checkBalanceAndLimit();
 
 
+    const interConfig: AdMobFreeInterstitialConfig = {
+      // add your config here
+      // for the sake of this example we will just use the test config
+      id: this.interId,
+      autoShow: false,
+      isTesting :this.testing
+    };
+    this.admobFree.interstitial.config(interConfig);
+
+    this.admobFree.on(this.admobFree.events.INTERSTITIAL_CLOSE).subscribe( () => {
+      this.admobFree.interstitial.prepare();
+    });
 
 
 
@@ -117,12 +140,11 @@ export class MainPage {
         position : 'top'
       });
       toast.present();
-      this.loading.dismiss();
       this.getLikes();
     });
 
     this.admobFree.on(this.admobFree.events.REWARD_VIDEO_CLOSE).subscribe(() => {
-
+      this.admobFree.interstitial.isReady().then( () => this.admobFree.interstitial.show())
       this.loading.dismiss();
       this.prepareAd().catch();
     });
@@ -153,10 +175,8 @@ export class MainPage {
   }
 
   ionViewWillEnter() {
-    //this.getTutorial(this.myService);
-    this.getGlobalSettings(this.myService);
-    //this.getHost(this.myService);
-    this.counter=this.getFirebaseCounter(this.myService.getActiveUser().uid,this.myService);
+    this.checkBalanceAndLimit();
+    //this.counter=this.getFirebaseCounter(this.myService.getActiveUser().uid,this.myService);
     console.log('ionViewDidLoad MainPage');
   }
 
@@ -245,42 +265,6 @@ export class MainPage {
     this.navCtrl.push(VideoPage).catch(e => alert(e));
   }
 
-  onInstructions1(){
-    const alert = this.alertCtrl.create({
-      title: 'Instructions',
-      subTitle: '♥ Go to your post/picture<br>' +
-      '♥ Click ⁝ above the post<br>' +
-      '♥ Click "Copy Link"<br> ' +
-      '♥ Click "Paste" button below<br>' +
-      '♥ Click "Get Likes"<br><br>' +
-      '⚠ Profile must be PUBLIC!"<br>',
-
-
-      buttons: [
-        {
-          text: 'VIDEO TUTORIAL',
-          role: 'cancel',
-          handler: () => {
-            alert.dismiss();
-            this.navCtrl.push(VideoPage);
-          }
-        },
-        {
-          text: 'I got it!',
-          handler: () => {
-            alert.dismiss();
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  checkLink(){
-    if(!this.isLinkInvalid())
-      this.prepareAd();
-  }
-
   onPaste(){
     this.clipboard.paste().then(
       (resolve: string) => {
@@ -300,12 +284,11 @@ export class MainPage {
         toast.present();
       }
     ).catch();
-
-
   }
 
   showAd(){
     this.admobFree.rewardVideo.show().catch();
+    this.admobFree.interstitial.prepare();
   }
 
   async prepareAd() {
@@ -354,53 +337,22 @@ export class MainPage {
 
   getLikes(){
 
-    this.httpClient.get(this.myService.host+'action=likes&link='+this.link)
+    this.httpClient.get(this.myService.host+'likes=true&balance=true&limit=true&email='+this.myService.json.email+'&link='+this.link)
       .subscribe(data => {
-
+        this.MaxReached = data['limitReached'];
         if(this.minumum_balance < data['balance']){
           this.isBalanceOkay=true;
         }else{
           this.isBalanceOkay=false;
         }
         console.log('Balance: ', data['balance']);
-        console.log('isBalanceOkay: ', this.isBalanceOkay);
-        this.logLink();
+        console.log('limitReached: ', data['limitReached']);
       });
 
 
   }
 
-  logLink(){
-    let date = new Date();
-    this.myService.getActiveUser().getIdToken()
-      .then( (token:string) =>{
-        // Get a reference to the database service
-        var uid = this.myService.getActiveUser().uid;
 
-         var newPostKey = firebase.database().ref().push().key;
-         // Write the new post's data simultaneously in the posts list and the user's post list.
-         var updates = {};
-         var hours = date.getHours();
-         updates['/links/'+date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate()+'/'+uid+'/'+newPostKey] = this.link;
-         //updates['/counters/'+date.getFullYear()+'/'+date.getMonth()+'/'+date.getDate()+'/'+uid] = {count : 1 };
-         //alert('Token OK');
-         firebase.database().ref().update(updates);
-
-
-        firebase.database().ref('users/' + this.myService.getActiveUser().uid).set({
-          username: this.myService.json["displayName"],
-          email: this.myService.json.email
-          //profile_picture : this.myService.json["imageUrl"]
-        });
-
-        this.counter = this.getFirebaseCounter(uid,this.myService);
-
-
-      })
-      .catch((e) => {
-        alert(e);
-      })
-  }
 
   showFeedbackPrompt() {
     const prompt = this.alertCtrl.create({
@@ -458,74 +410,18 @@ export class MainPage {
       })
   }
 
-  getFirebaseCounter(uid : string,ms : MyService):number{
-    let date = new Date();
-    var counter = 0;
-    var ref = firebase.database().ref();
-    ref.once("value")
-      .then(function(snapshot) {
-        counter = snapshot.child("links")
-          .child(date.getFullYear().toString())
-          .child(date.getMonth().toString())
-          .child(date.getDate().toString())
-          .child(uid).numChildren();
-        ms.counter = counter;
-        return counter;
-      }).catch( e => alert(e));
-    return 0;
-  }
-
-  getTutorial(ms : MyService){
-    var ref = firebase.database().ref();
-    ref.once("value")
-      .then(function(snapshot) {
-        var tut = snapshot.child("global")
-          .child("tutorial").val();
-        ms.tutorial = tut;
-      }).catch( e => alert(e));
-  }
-
-  getHost(ms: MyService) {
-    var ref = firebase.database().ref();
-    ref.once("value")
-      .then(function(snapshot) {
-        var tut = snapshot.child("global")
-          .child("host").val();
-        ms.host = tut.toString();
-      }).catch( e => alert(e));
-  }
-
 
 
   isMaxReached(){
-    if(this.myService.counter >= this.myService.maxLimit)
-      return true;
-    else
-      return false;
+    return this.MaxReached;
   }
 
-  getGlobalSettings(ms: MyService){
-    var ref = firebase.database().ref();
-    ref.once("value")
-      .then(function(snapshot) {
-        var max = snapshot.child("global")
-          .child("maxLimit").val();
-        ms.maxLimit = max;
-        var host = snapshot.child("global")
-          .child("host").val();
-        ms.host = host;
-        var tutorial = snapshot.child("global")
-          .child("tutorial").val();
-        ms.tutorial = tutorial;
-      }).catch( e => alert(e));
+  checkBalanceAndLimit(){
 
-  }
-
-
-  checkBalance(){
-
-    this.httpClient.get(this.myService.host+'action=balance')
+    this.httpClient.get(this.myService.host+'balance=true&limit=true&email='+this.myService.json.email)
       .subscribe(data => {
+        //alert(data);
+        this.MaxReached = data['limitReached'];
 
         if(this.minumum_balance < data['balance']){
           this.isBalanceOkay=true;
@@ -533,7 +429,8 @@ export class MainPage {
           this.isBalanceOkay=false;
         }
         console.log('Balance: ', data['balance']);
-        console.log('isBalanceOkay: ', this.isBalanceOkay);
+        console.log('limitReached: ', data['limitReached']);
+
       });
 
   }
