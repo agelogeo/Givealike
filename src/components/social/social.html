@@ -1,0 +1,17 @@
+<ion-grid text-center>
+  <ion-row>
+    <ion-col>
+      <h4>Share our app for</h4>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <button ion-button icon-left outline round block color="menuText" (click)="onAction('android')"><ion-icon name="android"></ion-icon>Google Play</button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <button ion-button icon-left outline block round color="menuText" (click)="onAction('ios')" [disabled]="true"><ion-icon name="ios"></ion-icon>App Store</button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
