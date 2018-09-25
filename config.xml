@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="gr.givealike.givealike" version="14.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="gr.givealike.givealike" version="14.5.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Givealike - Free Likes</name>
     <description>An awesome app offering free likes for social media</description>
     <author email="agelogeo@gmail.com" href="http://ionicframework.com/">Agelogeo</author>

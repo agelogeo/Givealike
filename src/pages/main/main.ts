@@ -385,29 +385,17 @@ export class MainPage {
   }
 
   sendFeedBack(message : string){
-    let date = new Date();
-
-
-
-
-    this.myService.getActiveUser().getIdToken()
-      .then( (token:string) =>{
-        // Get a reference to the database service
-        var uid = this.myService.getActiveUser().uid;
-
-        var newPostKey = firebase.database().ref().push().key;
-        // Write the new post's data simultaneously in the posts list and the user's post list.
-        var updates = {};
-        var hours = date.getHours();
-        updates['/feedback/'+date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate()+'/'+uid+'/'+newPostKey] = message;
-        //updates['/counters/'+date.getFullYear()+'/'+date.getMonth()+'/'+date.getDate()+'/'+uid] = {count : 1 };
-        //alert('Token OK');
-        firebase.database().ref().update(updates);
-
-      })
-      .catch((e) => {
-        alert(e);
-      })
+    if(message.length > 1){
+      this.httpClient.get(this.myService.host+'contact=true&text='+message+'&email='+this.myService.json.email)
+        .subscribe(data => {
+          const toast = this.toastCtrl.create({
+            message: 'Thank you for contacting us.',
+            position : 'middle',
+            duration: 3000
+          });
+          toast.present();
+        });
+    }
   }
 
 

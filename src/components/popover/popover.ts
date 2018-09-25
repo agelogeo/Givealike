@@ -25,15 +25,15 @@ import {AppVersion} from "@ionic-native/app-version";
         <ion-col>
           <h4>Feedback</h4>
         </ion-col>
-      </ion-row>
+      </ion-row>      
       <ion-row>
         <ion-col>
-          <button ion-button icon-left outline round block color="menuText" (click)="onAction('feedback')"><ion-icon name="contact"></ion-icon>Contact us</button>
+          <button ion-button icon-left outline round block color="menuText" (click)="onAction('rate')"><ion-icon name="star"></ion-icon>Rate us</button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          <button ion-button icon-left outline round block color="menuText" (click)="onAction('rate')"><ion-icon name="star"></ion-icon>Rate us</button>
+          <button ion-button icon-left outline round block color="menuText" (click)="onAction('feedback')"><ion-icon name="contact"></ion-icon>Contact us</button>
         </ion-col>
       </ion-row>
       <ion-row>
