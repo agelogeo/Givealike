@@ -39,7 +39,7 @@ export class HomePage {
 
   }
 
-  ionViewWillEnter(){
+  ionViewDidEnter(){
     this.splashScreen.hide();
   }
 

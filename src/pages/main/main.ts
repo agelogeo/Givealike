@@ -133,6 +133,7 @@ export class MainPage {
     this.admobFree.rewardVideo.config(videoConfig);
 
     this.admobFree.on(this.admobFree.events.REWARD_VIDEO_REWARD).subscribe(() => {
+      this.admobFree.interstitial.isReady().then( () => this.admobFree.interstitial.show());
       const toast = this.toastCtrl.create({
         message: 'Congratulations. You will receive your reward soon.',
         showCloseButton: true,
@@ -144,7 +145,6 @@ export class MainPage {
     });
 
     this.admobFree.on(this.admobFree.events.REWARD_VIDEO_CLOSE).subscribe(() => {
-      this.admobFree.interstitial.isReady().then( () => this.admobFree.interstitial.show())
       this.loading.dismiss();
       this.prepareAd().catch();
     });
