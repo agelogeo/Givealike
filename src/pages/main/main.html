@@ -48,7 +48,7 @@
   <br><br><br>
   <button ion-button round block large color="primary" (click)="showAd()" [disabled]="!isValid()">Get Likes!</button>
   <br>
-  <p *ngIf="emptyAd && link.length>25" class="unavailable">Our service is currently overloaded,<br> please try again in a few minutes.</p>
+  <p *ngIf="!MaxReached && emptyAd && link.length>25" class="unavailable">Our service is currently overloaded,<br> please try again in a few minutes.</p>
   <p *ngIf="isLinkInvalid() && wrongLink" class="unavailable">Link may be broken or invalid,<br> please check & paste it again.</p>
   <p *ngIf="MaxReached" class="unavailable">You've reached your maximum likes,<br> you can come back tomorrow.</p>
 
