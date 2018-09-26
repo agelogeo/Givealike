@@ -80,5 +80,9 @@
     <plugin name="cordova-plugin-x-socialsharing" spec="^5.4.1" />
     <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
     <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
+    <plugin name="phonegap-plugin-push" spec="^2.1.3">
+        <variable name="FCM_VERSION" value="11.6.2" />
+        <variable name="SENDER_ID" value="122276348193" />
+    </plugin>
     <engine name="android" spec="6.4.0" />
 </widget>

@@ -97,14 +97,14 @@ export class MainPage {
               private appRate: AppRate,
               private socialSharing: SocialSharing) {
 
-
+    this.showBannerAd();
     this.presentAlert();
 
 
     this.mail =this.myService.json.email;
     this.name =this.myService.json["displayName"];
     this.pic = this.myService.json["imageUrl"];
-    this.showBannerAd();
+
     //this.checkBalanceAndLimit();
 
 

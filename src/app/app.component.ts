@@ -9,6 +9,7 @@ import {MyService} from "../services/auth";
 import {MainPage} from "../pages/main/main";
 import {AndroidPermissions} from "@ionic-native/android-permissions";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
+import {Push, PushObject, PushOptions} from "@ionic-native/push";
 @Component({
   templateUrl: 'app.html'
 })
@@ -20,6 +21,7 @@ export class MyApp {
   constructor(
               platform: Platform,
               statusBar: StatusBar,
+              private push : Push,
               splashScreen : SplashScreen,private screenOrientation: ScreenOrientation,
               private androidPermissions: AndroidPermissions) {
                 platform.ready().then(() => {
@@ -45,9 +47,35 @@ export class MyApp {
                     result => console.log('Has permission?',result.hasPermission),
                     err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE)
                   );
-
+                  this.pushSetup();
                   //splashScreen.hide();
               });
+  }
+
+  pushSetup(){
+
+    const options: PushOptions = {
+      android: {
+        senderID: '122276348193',
+        forceShow : true,
+        sound: true,
+        vibrate: true
+      },
+      ios: {
+        alert: true,
+        badge: true,
+        sound: true
+      }
+    };
+
+    const pushObject: PushObject = this.push.init(options);
+
+
+    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+
+    pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+
+    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
   }
 
 }
