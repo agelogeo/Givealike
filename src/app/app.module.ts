@@ -30,6 +30,7 @@ import {Push} from "@ionic-native/push";
 
 export const firebaseConfig={
 
+  
 }
 firebase.initializeApp(firebaseConfig);
 firebase.database();

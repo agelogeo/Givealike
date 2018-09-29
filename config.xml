@@ -84,4 +84,5 @@
         <variable name="FCM_VERSION" value="11.6.2" />
         <variable name="SENDER_ID" value="122276348193" />
     </plugin>
+    <engine name="android" spec="6.4.0" />
 </widget>
