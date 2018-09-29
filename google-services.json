@@ -1,0 +1,72 @@
+{
+  "project_info": {
+    "project_number": "122276348193",
+    "firebase_url": "https://givealike-de9d1.firebaseio.com",
+    "project_id": "givealike-de9d1",
+    "storage_bucket": "givealike-de9d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122276348193:android:19edd1e5978e015f",
+        "android_client_info": {
+          "package_name": "gr.givealike.givealike"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122276348193-fo69nfa4tbqb9ejed8339mco1gnb5qd1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "gr.givealike.givealike",
+            "certificate_hash": "0c41becd17d8ecd089d33397d59cbcab08744ac6"
+          }
+        },
+        {
+          "client_id": "122276348193-33pqgpef2pl2dvqg6pshmaqdbvkcs1ak.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "gr.givealike.givealike",
+            "certificate_hash": "2c2ce79ba895c08d8da47247c3ebedffc4c69d14"
+          }
+        },
+        {
+          "client_id": "122276348193-co2plesol3g46rberhoo3or26tuhd3ce.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "gr.givealike.givealike",
+            "certificate_hash": "c39cb2d25b7ea75055cc6f3e03fc95732af8aa63"
+          }
+        },
+        {
+          "client_id": "122276348193-l0l7rgaqtpl0p0h7gvd5g4n61nn7prkm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMfoHWBNbXVg_RdStAgYU_wb9zywQMtbY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "122276348193-b1r83r9727pkf2qqkblneffaikjm84h2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      },
+      "admob_app_id": "ca-app-pub-4781041300358039~5856284969"
+    }
+  ],
+  "configuration_version": "1"
+}
