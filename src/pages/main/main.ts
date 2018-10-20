@@ -193,9 +193,9 @@ export class MainPage {
 
   presentAlert() {
     let alert = this.alertCtrl.create({
-      title: 'WARNING !!',
+      title: 'WARNING !! <br>[BETA RELEASE]',
       subTitle: 'We don\'t need your account credentials.',
-      message : 'Givealike will NEVER ask you for your username or password. We ONLY need a link to send your reward.',
+      message : `Givealike will NEVER ask you for your username or password. We ONLY need a link to send your reward. <br><br> Keep in mind that we don\'t guarantee likes\' delivery.<br>PLEASE BE PATIENT.`,
       buttons: ['I understand.']
     });
     alert.present();

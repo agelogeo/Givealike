@@ -29,7 +29,7 @@ import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {Push} from "@ionic-native/push";
 
 export const firebaseConfig={
-
+  
 }
 firebase.initializeApp(firebaseConfig);
 firebase.database();

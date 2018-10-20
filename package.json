@@ -34,10 +34,10 @@
     "@ionic-native/status-bar": "^4.15.0",
     "@ionic/storage": "^2.2.0",
     "angularfire2": "^5.0.2",
-    "cordova-admob-sdk": "^0.17.0",
+    "cordova-admob-sdk": "^0.20.0",
     "cordova-android": "6.4.0",
     "cordova-clipboard": "^1.2.1",
-    "cordova-plugin-admob-free": "^0.17.4",
+    "cordova-plugin-admob-free": "0.21.0",
     "cordova-plugin-android-permissions": "^1.0.0",
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-apprate": "^1.4.0",
@@ -83,7 +83,6 @@
         "PLAY_SERVICES_VERSION": "11.8.0",
         "REVERSED_CLIENT_ID": "givealike.givealike.gr"
       },
-      "cordova-plugin-admob-free": {},
       "cordova-clipboard": {},
       "cordova-sqlite-storage": {},
       "cordova-plugin-android-permissions": {},
@@ -94,6 +93,9 @@
       "phonegap-plugin-push": {
         "FCM_VERSION": "11.6.2",
         "SENDER_ID": "122276348193"
+      },
+      "cordova-plugin-admob-free": {
+        "ADMOB_APP_ID": "ca-app-pub-4781041300358039~5856284969"
       }
     },
     "platforms": [
