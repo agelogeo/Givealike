@@ -53,6 +53,24 @@ export class MyApp {
   }
 
   pushSetup(){
+    // to check if we have permission
+    this.push.hasPermission()
+      .then((res: any) => {
+
+        if (res.isEnabled) {
+          console.log('We have permission to send push notifications');
+        } else {
+          console.log('We do not have permission to send push notifications');
+        }
+
+      });
+
+    this.push.createChannel({
+      id: "givealikechannel",
+      description: "Givealike Push Channel",
+      // The importance property goes from 1 = Lowest, 2 = Low, 3 = Normal, 4 = High and 5 = Highest.
+      importance: 3
+    }).then(() => console.log('Channel created'));
 
     const options: PushOptions = {
       android: {
