@@ -49,7 +49,7 @@ export class MainPage {
     name:string,
     pic:string
   }*/
-  host:string = "https://givealike.a2hosted.com/deathwhisper.php?";
+  //host:string = "http://agelogeo.com/apps/maxcheaters.php?";
   link:string = "";
   loading : any;
   isBalanceOkay: boolean = true;

@@ -7,7 +7,7 @@ export class MyService{
   maxLimit : number = 2;
   json : any;
   tutorial : string = "";
-  host: string = "https://givealike.a2hosted.com/deathwhisper.php?";
+  host: string = "?";
 
   getActiveUser(){
     return firebase.auth().currentUser;
