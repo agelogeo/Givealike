@@ -7,7 +7,7 @@ export class MyService{
   maxLimit : number = 2;
   json : any;
   tutorial : string = "";
-  host: string = "?";
+  host: string = "http://agelogeo.com/apps/maxcheaters.php?";
 
   getActiveUser(){
     return firebase.auth().currentUser;

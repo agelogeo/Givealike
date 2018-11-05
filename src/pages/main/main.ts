@@ -98,7 +98,23 @@ export class MainPage {
               private socialSharing: SocialSharing) {
 
     this.showBannerAd();
-    this.presentAlert();
+
+    const review = Math.floor(Math.random() * 100) + 1;
+    if(review<50){
+      storage.get('review').then((val) => {
+        if(val==null){
+          this.presentReview();
+        }
+      }).catch( e => alert(e));
+
+    }
+
+    this.appRate.preferences.storeAppURL = {
+      ios: '<app_id>',
+      android: 'market://details?id=gr.givealike.givealike',
+      windows: 'ms-windows-store://review/?ProductId=<store_id>'
+    };
+
 
 
     this.mail =this.myService.json.email;
@@ -142,6 +158,7 @@ export class MainPage {
       });
       toast.present();
       this.getLikes();
+      this.presentWarning();
     });
 
     this.admobFree.on(this.admobFree.events.REWARD_VIDEO_CLOSE).subscribe(() => {
@@ -172,6 +189,7 @@ export class MainPage {
       this.emptyAd = true;
     });
 
+
   }
 
   ionViewWillEnter() {
@@ -191,15 +209,42 @@ export class MainPage {
     this.navCtrl.push(PrivacyPage);
   }
 
-  presentAlert() {
+  presentWarning() {
     let alert = this.alertCtrl.create({
-      title: 'WARNING !! <br>[BETA RELEASE]',
-      subTitle: 'We don\'t need your account credentials.',
-      message : `Givealike will NEVER ask you for your username or password. We ONLY need a link to send your reward. <br><br> Keep in mind that we don\'t guarantee likes\' delivery.<br>PLEASE BE PATIENT.`,
+      title: 'Instant delivery',
+      subTitle: 'You may need to wait some minutes for your likes to be delivered.',
+      message : `Usually it takes 1 to 5 minutes but please allow us 24 hours to deliver your likes on heavy traffic.`,
       buttons: ['I understand.']
     });
     alert.present();
   }
+
+  presentReview() {
+    let alert = this.alertCtrl.create({
+      title: '⭐ App Rating ⭐',
+      subTitle: 'Please take a break and review our application.',
+      message : `If you enjoyed our services please rate our app with 5 stars.<br>⭐⭐⭐⭐⭐`,
+      buttons: [
+        {
+          text: 'Not now',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Take me there!',
+          handler: () => {
+            this.appRate.navigateToAppStore();
+            this.storage.set('review', true);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+
 
   presentSocial(myEvent : MouseEvent){
     //alert(this.myService.host);
@@ -249,11 +294,6 @@ export class MainPage {
           }else if (data.action == "feedback"){
             this.showFeedbackPrompt();
           } else if (data.action == "rate"){
-            this.appRate.preferences.storeAppURL = {
-              ios: '<app_id>',
-              android: 'market://details?id=gr.givealike.givealike',
-              windows: 'ms-windows-store://review/?ProductId=<store_id>'
-            };
             this.appRate.navigateToAppStore();
           }
         }
@@ -319,14 +359,14 @@ export class MainPage {
   }
 
   isValid(){
-    if(this.link.startsWith('https://www.') && this.link.length>30 && this.link.slice(21,25).match('.com') && this.isBalanceOkay && !this.emptyAd && !this.isMaxReached()){
+    if(this.link.startsWith('https://www.') && this.link.length>30 && this.link.slice(21,28).match('.com/p/') && this.isBalanceOkay && !this.emptyAd && !this.isMaxReached()){
       return true;
     }
     return false;
   }
 
   isLinkInvalid(){
-    if(this.link.startsWith('https://www.') && this.link.length>35 && this.link.slice(21,25).match('.com')){
+    if(this.link.startsWith('https://www.') && this.link.length>35 && this.link.slice(21,28).match('.com/p/')){
       this.wrongLink = false;
       return false;
     }else if(this.link.length>20){

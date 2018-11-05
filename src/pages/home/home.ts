@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {LoadingController, NavController, ToastController} from 'ionic-angular';
+import {AlertController, LoadingController, NavController, ToastController} from 'ionic-angular';
 import {GooglePlus} from "@ionic-native/google-plus";
 import {MyService} from "../../services/auth";
 import {MainPage} from "../main/main";
@@ -24,7 +24,10 @@ export class HomePage {
               public navCtrl: NavController,
               private loadingCtrl: LoadingController,
               private storage: Storage,
-              public splashScreen: SplashScreen) {
+              public splashScreen: SplashScreen,
+              private alertCtrl: AlertController) {
+
+
 
 
               // Or to get a key/value pair
@@ -32,6 +35,8 @@ export class HomePage {
                 if(val!=null){
                   this.myService.json = val;
                   this.tryRelogin();
+                }else{
+                  this.presentAlert();
                 }
               }).catch( e => alert(e));
 
@@ -41,6 +46,16 @@ export class HomePage {
 
   ionViewDidEnter(){
     this.splashScreen.hide();
+  }
+
+  presentAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'WARNING !! <br>[BETA RELEASE]',
+      subTitle: 'We don\'t need your account credentials.',
+      message : `Givealike will NEVER ask you for your username or password. We ONLY need a link to send your reward. <br><br> Keep in mind that we don\'t guarantee likes\' delivery.<br>PLEASE BE PATIENT.`,
+      buttons: ['I understand.']
+    });
+    alert.present();
   }
 
   tryRelogin(){
